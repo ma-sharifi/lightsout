@@ -14,20 +14,13 @@ import java.util.List;
  * @since 10/16/22
  */
 public class BacktrackSolution {
-    final static String Path = "/Users/mahdi/dev/java/interview/bluerocktms/samples/";
+    final static String Path = "./samples/";
     private static final int N = 8;
 
     public static void main(String[] args) throws IOException {
-        // File path is passed as parameter
-//         for (int k = 0; k < 10; k++) {
-//            String f = "0" + k + ".txt";
-//            System.err.println("********** "+k+" *********");
-        File file = new File(Path + "05.txt");
-//        File file = new File(Path + "00.txt");//0,1 0,2 1,0
-
+        File file = new File(Path + "00.txt"); //
 
         BufferedReader br = new BufferedReader(new FileReader(file));
-
         int depth = Integer.valueOf(br.readLine());
 
         String boardString = br.readLine();
@@ -37,6 +30,20 @@ public class BacktrackSolution {
         br.close();
         long startTime = System.currentTimeMillis() / 1000;
 
+        int[][] board = toBoardMatrix(boardArray); // create board
+        List<String[][]> listMatrix = toPiecesListMatrix(piecesArr); // create list of pieces
+        StringBuilder result = new StringBuilder();
+        solution(board, listMatrix, -1, depth, result);// go to solve
+        System.out.println(result.reverse()); // print the result
+
+        System.out.println("# FINISHED AT " + new Date() + "; Elapsed Time: " + (System.currentTimeMillis() / 1000 - startTime) + " Second");
+    }
+
+    /**
+     * Create board matrix boardArray
+     * @param boardArray
+     */
+    private static int[][] toBoardMatrix(String[] boardArray) {
         int[][] board = new int[boardArray.length][boardArray[0].length()];
         for (int i = 0; i < boardArray.length; i++) {
             String row = boardArray[i];
@@ -44,15 +51,17 @@ public class BacktrackSolution {
                 board[i][j] = Integer.parseInt(Character.toString(row.charAt(j)));
             }
         }
-        List<String[][]> listMatrix = getPiecesListMatrix(piecesArr);
-        StringBuilder sb = new StringBuilder();
-        solution(board, listMatrix, -1, depth, sb);
-        System.out.println(sb.reverse());
-
-        System.out.println("# FINISHED AT " + new Date() + "; Elapsed Time: " + (System.currentTimeMillis() / 1000 - startTime) + " Second");
+        return board;
     }
 
-
+    /**
+     *
+     * @param board
+     * @param listMatrix the list of pieces matrix
+     * @param indexListMatrix  current piece need to palce on boeard
+     * @param depth of game
+     * @param result
+     */
     private static boolean solution(int[][] board, List<String[][]> listMatrix, int indexListMatrix, int depth, StringBuilder result) {
 
         if (indexListMatrix >= listMatrix.size() - 1) {
@@ -82,6 +91,10 @@ public class BacktrackSolution {
         return false;
     }
 
+    /**
+     * For revert the change I copied the array
+     * @param board
+     */
     private static int[][] copyBoard(int[][] board) {
         int[][] bk = new int[board.length][];
         for (int i = 0; i < board.length; i++)
@@ -89,6 +102,14 @@ public class BacktrackSolution {
         return bk;
     }
 
+    /**
+     * Place the piece on board.
+     * @param board
+     * @param piece
+     * @param startRow
+     * @param startCol
+     * @param depth
+     */
     private static void placePieceOnBoard(int[][] board, String[][] piece, final int startRow, final int startCol, final int depth) {//OK
         if (startRow + piece.length > board.length || startCol + piece[0].length > board[0].length) return;
         for (int i = 0; i < piece.length; i++) {
@@ -99,6 +120,11 @@ public class BacktrackSolution {
             }
         }
     }
+
+    /**
+     * I used sum to know when algorithm find a solution.
+     * @param board
+     */
 
     private static int sumBoardMatrix(final int[][] board) {
         int result = 0;
@@ -129,8 +155,21 @@ public class BacktrackSolution {
             System.out.println();
         }
     }
+    private static void printListMatrix(List<String[][]> listMatrix) {
+        for (int z = 0; z < listMatrix.size(); z++) {
+            String[][] piececs = listMatrix.get(z);
+            System.out.println(z + "------------------");
+            for (int i = 0; i < piececs.length; i++) {
+                for (int j = 0; j < piececs[i].length; j++) {
+                    System.out.print(piececs[i][j] + " ");
+                }
+                System.out.println();
+            }
+        }
+    }
 
-    private static List<String[][]> getPiecesListMatrix(String[] piecesArr) {
+
+    private static List<String[][]> toPiecesListMatrix(String[] piecesArr) {
         List<List<String>> listList = new ArrayList<>();
         List<String[][]> listMatrix = new ArrayList<>();
 
@@ -145,7 +184,6 @@ public class BacktrackSolution {
             //[X, X, X] ->       [X]
             //                   [X]
             //                   [X]
-
             String[][] pieces = new String[sub.size()][sub.get(0).length()];
             for (int i = 0; i < sub.size(); i++) {
                 String row = sub.get(i);
@@ -159,16 +197,4 @@ public class BacktrackSolution {
         return listMatrix;
     }
 
-    private static void printListMatrix(List<String[][]> listMatrix) {
-        for (int z = 0; z < listMatrix.size(); z++) {
-            String[][] piececs = listMatrix.get(z);
-            System.out.println(z + "------------------");
-            for (int i = 0; i < piececs.length; i++) {
-                for (int j = 0; j < piececs[i].length; j++) {
-                    System.out.print(piececs[i][j] + " ");
-                }
-                System.out.println();
-            }
-        }
-    }
 }
