@@ -21,7 +21,7 @@ class BacktrackSolutionTest {
 
     @BeforeEach
     void loadSample() throws IOException {
-        File file = new File("./samples/" + "00.txt"); //
+        File file = new File("./samples/" + "00.txt"); // Select the sample here
 
         BufferedReader br = new BufferedReader(new FileReader(file));
         depth = Integer.valueOf(br.readLine());
@@ -37,8 +37,9 @@ class BacktrackSolutionTest {
     }
 
     @Test
-    void testSolution(){
+    void testSolution00(){
         String result= solution.solution(board, listMatrix, depth);// go to solve
         assertEquals("0,1 0,2 1,0",result);
     }
+
 }

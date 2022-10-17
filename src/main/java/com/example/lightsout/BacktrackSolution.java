@@ -58,7 +58,7 @@ public class BacktrackSolution {
         return result.reverse().toString().trim();
     }
     /**
-     *
+     * The solution of the application. I used backtrack for solving this problem.
      * @param board
      * @param listMatrix the list of pieces matrix
      * @param indexListMatrix  current piece need to palce on boeard
@@ -67,23 +67,23 @@ public class BacktrackSolution {
      */
     private static boolean backtrack(int[][] board, List<String[][]> listMatrix, int indexListMatrix, int depth, StringBuilder result) {
 
-        if (indexListMatrix >= listMatrix.size() - 1) {
+        if (indexListMatrix >= listMatrix.size() - 1) {//If our pieces are finished. Then return false.
             return false;
         }
-        indexListMatrix++;
-        for (int row = 0; row < board.length; row++) {
+        indexListMatrix++;// Select the next piece
+        for (int row = 0; row < board.length; row++) { //traverse the matrix
             for (int col = 0; col < board[0].length; col++) {
                 if (row + listMatrix.get(indexListMatrix).length > board.length || col + listMatrix.get(indexListMatrix)[0].length > board[0].length)
                     break;//If piece violated the boarder of the board, go for the next item of board.
                 int[][] bk = copyBoard(board);//for backtrack. Save the current board.
-                placePieceOnBoard(board, listMatrix.get(indexListMatrix), row, col, depth);//Place	a	piece	on	the	board
-                if (sumBoardMatrix(board) == 0) {
-                    if ((indexListMatrix) == (listMatrix.size() - 1)) {
+                placePieceOnBoard(board, listMatrix.get(indexListMatrix), row, col, depth);//Place a piece on the board
+                if (sumBoardMatrix(board) == 0) {//if we found a solution then return true.
+                    if ((indexListMatrix) == (listMatrix.size() - 1)) {//if all pieces are finished and found a solution then return true.
                         result.append(row).append(",").append(col).append(" ");
                         return true;
                     } else return false;
                 }
-                if (!backtrack(board, listMatrix, indexListMatrix, depth, result)) {
+                if (!backtrack(board, listMatrix, indexListMatrix, depth, result)) {//call the solution with the next piece.
                     board = copyBoard(bk);//Revert-> backtrack if the above condition is false
                 } else {
                     result.append(row).append(",").append(col).append(" ");
