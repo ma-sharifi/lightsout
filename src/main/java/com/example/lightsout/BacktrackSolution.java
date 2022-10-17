@@ -32,9 +32,7 @@ public class BacktrackSolution {
 
         int[][] board = toBoardMatrix(boardArray); // create board
         List<String[][]> listMatrix = toPiecesListMatrix(piecesArr); // create list of pieces
-        StringBuilder result = new StringBuilder();
-        solution(board, listMatrix, -1, depth, result);// go to solve
-        System.out.println(result.reverse()); // print the result
+        System.out.println(solution(board,listMatrix,depth));
 
         System.out.println("# FINISHED AT " + new Date() + "; Elapsed Time: " + (System.currentTimeMillis() / 1000 - startTime) + " Second");
     }
@@ -43,7 +41,7 @@ public class BacktrackSolution {
      * Create board matrix boardArray
      * @param boardArray
      */
-    private static int[][] toBoardMatrix(String[] boardArray) {
+    public static int[][] toBoardMatrix(String[] boardArray) {
         int[][] board = new int[boardArray.length][boardArray[0].length()];
         for (int i = 0; i < boardArray.length; i++) {
             String row = boardArray[i];
@@ -54,6 +52,11 @@ public class BacktrackSolution {
         return board;
     }
 
+    public static String solution(int[][] board, List<String[][]> listMatrix, int depth){
+        StringBuilder result= new StringBuilder();
+        backtrack(board, listMatrix, -1, depth, result);// go to solve
+        return result.reverse().toString().trim();
+    }
     /**
      *
      * @param board
@@ -62,7 +65,7 @@ public class BacktrackSolution {
      * @param depth of game
      * @param result
      */
-    private static boolean solution(int[][] board, List<String[][]> listMatrix, int indexListMatrix, int depth, StringBuilder result) {
+    private static boolean backtrack(int[][] board, List<String[][]> listMatrix, int indexListMatrix, int depth, StringBuilder result) {
 
         if (indexListMatrix >= listMatrix.size() - 1) {
             return false;
@@ -80,7 +83,7 @@ public class BacktrackSolution {
                         return true;
                     } else return false;
                 }
-                if (!solution(board, listMatrix, indexListMatrix, depth, result)) {
+                if (!backtrack(board, listMatrix, indexListMatrix, depth, result)) {
                     board = copyBoard(bk);//Revert-> backtrack if the above condition is false
                 } else {
                     result.append(row).append(",").append(col).append(" ");
@@ -169,7 +172,7 @@ public class BacktrackSolution {
     }
 
 
-    private static List<String[][]> toPiecesListMatrix(String[] piecesArr) {
+    public static List<String[][]> toPiecesListMatrix(String[] piecesArr) {
         List<List<String>> listList = new ArrayList<>();
         List<String[][]> listMatrix = new ArrayList<>();
 
