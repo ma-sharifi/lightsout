@@ -67,6 +67,8 @@ Samples are in `/sample` folder.
 * 09.txt: Time Limit Exceeded. It takes more tha 4 hours
 * 10.txt: Time Limit Exceeded. It takes more tha 4 hours
 ```
+### How to run
+Just click on BacktrackSolution.java and run the main method.
 
 ### Library
 I found some library for work with matrix.Our problem is more about search not mathematical things in this algorithm.
